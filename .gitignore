@@ -1,0 +1,5 @@
+/modules/api/src/langchain_layer/layer
+/modules/api/src/langchain_layer/*.zip
+/.idea
+/.terraform
+/modules/api/src/*.zip
