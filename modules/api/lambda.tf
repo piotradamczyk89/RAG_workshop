@@ -65,6 +65,7 @@ data "aws_iam_policy_document" "logs_policy_doc" {
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
+      "secretsmanager:GetSecretValue",
     ]
     resources = ["*"]
   }
@@ -76,6 +77,7 @@ resource "aws_iam_policy" "logs_policy" {
 resource "aws_iam_policy" "dynamodb_access_policy" {
   policy = data.aws_iam_policy_document.dynamodb_access_doc.json
 }
+
 
 
 resource "aws_iam_role" "lambda" {

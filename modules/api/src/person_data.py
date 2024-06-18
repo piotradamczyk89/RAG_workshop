@@ -39,7 +39,7 @@ def handler(event, context):
 
         return {
             'statusCode': 200,
-            'body': json.dumps('Items added successfully!')
+            'body': json.dumps({"result": 'Items added successfully!'})
         }
     except Exception as e:
         logger.error(f"Internal Server Error: {str(e)}")
