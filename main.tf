@@ -40,7 +40,7 @@ module "api" {
       extension   = "py"
       http_method = "POST"
       layer = false
-    },
+    }
   }
 }
 

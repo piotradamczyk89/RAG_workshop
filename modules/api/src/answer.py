@@ -51,15 +51,21 @@ def handler(event, context):
                 "body": json.dumps({"error": "Missing header login or there is no user with provided login"})
             }
         answer = json.loads(event.get('body', {})).get('answer', "")
-        if answer is None:
+        if not answer:
             return {
                 'statusCode': 200,
                 "headers": {"Content-Type": "application/json"},
-                'body': json.dumps({"result": "NOK", "description": "Missing answer"})
+                'body': json.dumps({"error": "Missing answer"})
             }
-
-        info = user['Item']['question']['info']
-        question = user['Item']['question']['question']
+        user_question_data = user['Item'].get('question', "")
+        if not user_question_data:
+            return {
+                'statusCode': 200,
+                "headers": {"Content-Type": "application/json"},
+                'body': json.dumps({"error": "If you want to answer question you need to be asked first :)"})
+            }
+        info = user_question_data['info']
+        question = user_question_data['question']
         secret_manager_cache = SecretManagerCache()
         ai_key = secret_manager_cache.get_secret("AIKey")
         chat = ChatOpenAI(temperature=0, openai_api_key=ai_key, max_tokens=10)
@@ -91,8 +97,7 @@ def handler(event, context):
             return {
                 'statusCode': 200,
                 "headers": {"Content-Type": "application/json"},
-                'body': json.dumps({"result": "NOK",
-                                    "description": "the prompt which suposed to check your answer crashed :( try again and/or contact the workshop leader"})
+                'body': json.dumps({"error": "the prompt which suposed to check your answer crashed :( try again and/or contact the workshop leader"})
             }
     except ClientError as e:
         logger.error(f"Client Error: {str(e)}")
